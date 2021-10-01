@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  
+<head>
+  <meta charset="utf-8">
+  <title>Graphs</title>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+</head>
+  
+<body class="container">
+  <center class="row">
+    <h1>Plotting a <b>Graph</b> using <b>Django</b></h1>
+  </center>
+  <hr />
+  <div class="row">
+    <div class="col-md-6">
+      <canvas id="chart_one"></canvas>
+    </div>
+    <div class="col-md-6">
+      <canvas id="chart_two"></canvas>
+    </div>
+    </div>
+    <div class="row">
+    <div class = "col-md-6">
+      <canvas id="chart_three"></canvas>
+  </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+
+  <script>
+    var endpoint1 = '/api-mf';
+    var endpoint2 = '/api-rel';
+    var endpoint3 = '/api-list'; 
+  
+    $.ajax({
+      method: "GET",
+      url: endpoint1,
+      success: function(data) {
+        drawLineGraph(data, 'chart_one');
+        console.log("drawing");
+      },
+      error: function(error_data) {
+        console.log(error_data);
+      }
+    })
+
+    $.ajax({
+      method: "GET",
+      url: endpoint2,
+      success: function(data) {
+        drawBarGraph(data, 'chart_two');
+        console.log("drawing");
+      },
+      error: function(error_data) {
+        console.log(error_data);
+      }
+    })
+    
+     $.ajax({
+      method: "GET",
+      url: endpoint3,
+      success: function(data) {
+        drawPieGraph(data, 'chart_three');
+        console.log("drawing");
+      },
+      error: function(error_data) {
+        console.log(error_data);
+      }
+    }) 
+
+
+
+  
+    function drawLineGraph(data, id) {
+      var labels = data.labels;
+      var chartLabel = data.chartLabel;
+      var chartdata = data.chartdata;
+      var ctx = document.getElementById(id).getContext('2d');
+      var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
+  
+        // The data for our dataset
+        data: {
+          labels: labels,
+          datasets: [{
+            label: chartLabel,
+            backgroundColor:[
+             'rgba(255, 99, 132, 1)',
+             'rgba(54, 162, 235, 1)'
+              ], /*rgb(255, 100, 200)',*/
+            borderColor:[
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)'
+              ],/* 'rgb(55, 99, 132)' */
+            data: chartdata,  
+          }]
+        },
+  
+        // Configuration options go here
+        options: {
+          scales: {
+            xAxes: [{
+              display: true,
+              barPercentage : 0.3
+            }],
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+  
+      });
+    }
+  
+{% comment %} Right part code {% endcomment %}
+
+    function drawBarGraph(data, id) {
+      var labels = data.labels;
+      var GraphLabel = data.GraphLabel;
+      var Graphdata = data.Graphdata;
+      var ctx = document.getElementById(id).getContext('2d');
+      var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: GraphLabel,
+            data: Graphdata,
+            backgroundColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      });
+    }
+
+
+
+
+
+
+
+
+
+
+     function drawPieGraph(data, id) {
+      var labels = data.labels;
+      var PlotLabel = data.PlotLabel;
+      var Plotdata = data.Plotdata;
+      var ctx = document.getElementById(id).getContext('2d');
+      var bychart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
+  
+        // The data for our dataset
+        data: {
+          labels: labels,
+          datasets: [{
+            label: PlotLabel,
+            data: Plotdata,
+            backgroundColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+       options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+  
+      });
+    }
+  </script>
+</body>
+
+</html> 
+    
